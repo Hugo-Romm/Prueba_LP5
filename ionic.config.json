@@ -1,0 +1,7 @@
+{
+  "name": "Prueba_LP5",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
