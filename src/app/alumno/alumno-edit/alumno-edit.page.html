@@ -1,0 +1,61 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="#">
+      </ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{isNew ? 'Nuevo' : 'Editar'}} Alumno</ion-title>
+
+      <ion-buttons slot="primary">
+
+        <ion-button fill="solid" (click)="guardarAlumno()">
+          Guardar
+          <ion-icon slot="end" name="save"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="!isNew" fill="solid" (click)="eliminarAlumno()" color="danger">
+          <ion-icon slot="end" name="trash"></ion-icon>
+        </ion-button>
+      
+      </ion-buttons>
+ 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+ 
+  <ion-list>
+    <ion-item>
+      <ion-label>ID#</ion-label>
+      <ion-input
+        [(ngModel)]="id" readonly="true" disabled="true">
+      </ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>Codigo</ion-label>
+      <ion-input
+        [(ngModel)]="alumno.codigo">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Nombre</ion-label>
+      <ion-input
+        [(ngModel)]="alumno.nombre">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Apellido</ion-label>
+      <ion-input
+        [(ngModel)]="alumno.apellido">
+      </ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-button *ngIf="!isNew" fill="solid" (click)="eliminarAlumno()" color="danger">
+    Eliminar
+    <ion-icon slot="end" name="trash"></ion-icon>
+  </ion-button>
+</ion-content>
