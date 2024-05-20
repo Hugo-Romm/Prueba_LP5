@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { collection, Firestore, doc, deleteDoc, query, limit, getDocs, startAfter, orderBy, where } 
-from '@angular/fire/firestore';
+import { collection, Firestore, doc, deleteDoc, query, limit, getDocs, startAfter, orderBy, where }
+  from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
 
@@ -14,15 +14,20 @@ export class AlumnoListPage implements OnInit {
   isSearch: boolean = false; //para la barra de busqueda
   query = ""; //va contener la búsqueda que el cliente realiza mediante el buscador
   lastVisible: any = null;
-  li = 20;
+  li = 30;
+  isDarkMode: boolean = false;
 
   constructor(private readonly firestore: Firestore) { }
 
-  
+
   listaAlumnos: any[] = [];
-  
+
   ngOnInit() {
     this.listarAlumnos();
+  }
+
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
   }
 
   listarAlumnosSinFiltro = () => {
@@ -75,7 +80,7 @@ export class AlumnoListPage implements OnInit {
             const doc: any = re.docs[i].data();
             if (doc.nombre.toUpperCase().
               startsWith(
-                this.query.toUpperCase().charAt(0)//M
+                this.query.toUpperCase().charAt(0)
               )) {
               nuevoArray.push(re.docs[i]);
 
@@ -116,13 +121,13 @@ export class AlumnoListPage implements OnInit {
     this.listarAlumnos();
   }
 
-  buscarSearch = (e: any) => {                // Define una función llamada buscarSearch que toma un argumento (evento) de cualquier tipo
-    this.isSearch = false;                  // Establece la propiedad isSearch del objeto actual (this) a false
-    this.query = e.target.value;            // Asigna el valor del campo de entrada (input) del evento a la propiedad query del objeto actual
+  buscarSearch = (e: any) => { // Define una función llamada buscarSearch que toma un argumento (evento) de cualquier tipo
+    this.isSearch = false; // Establece la propiedad isSearch del objeto actual (this) a false
+    this.query = e.target.value; // Asigna el valor del campo de entrada (input) del evento a la propiedad query del objeto actual
 
-    this.listaAlumnos = new Array();        // Inicializa la propiedad listaAlumnos del objeto actual como un nuevo arreglo vacío
-    this.lastVisible = null;                // Establece la propiedad lastVisible del objeto actual a null
-    this.listarAlumnos();                   // Llama al método listarAlumnos del objeto actual
-}
+    this.listaAlumnos = new Array(); // Inicializa la propiedad listaAlumnos del objeto actual como un nuevo arreglo vacío
+    this.lastVisible = null; // Establece la propiedad lastVisible del objeto actual a null
+    this.listarAlumnos(); // Llama al método listarAlumnos del objeto actual
+  }
 
 }

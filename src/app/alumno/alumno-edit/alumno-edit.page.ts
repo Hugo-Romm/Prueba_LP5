@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { collection, addDoc, updateDoc, Firestore, doc, getDoc, deleteDoc } 
-from '@angular/fire/firestore';
+import { collection, addDoc, updateDoc, getDoc, doc, Firestore, deleteDoc } from '@angular/fire/firestore';
+import { Storage, StorageError, UploadTaskSnapshot, getDownloadURL, ref, uploadBytesResumable, deleteObject } from '@angular/fire/storage';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -10,45 +10,77 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AlumnoEditPage implements OnInit {
   id: any;  //atributo que recibe el id del reg. desde la ruta
-  isNew : boolean = false;
-  
+  alumno: any = {};
+  isNew: boolean = false;
+  avatar: string = '';
+
   constructor(
     private readonly firestore: Firestore,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private storage: Storage
   ) { }
 
   //metodo de la interfaz OnInit
   ngOnInit() {
-    //this.incluirAlumno();
-    //this.editarAlumno("FcoZmWssJ6p9Oh5oIpBD");
-    this.route.params.subscribe((params:any) => {
-        console.log("params", params); 
-        this.id = params.id;
-        if (params.id == 'new') {
-          this.isNew = true;
-        } else {
-          this.obtenerAlumno(this.id);
-        }
+    this.route.params.subscribe((params: any) => {
+      this.id = params.id;
+      if (params.id == 'new') {
+        this.isNew = true;
+      } else {
+        this.obtenerAlumno(this.id);
+      }
     });
   }
 
+  incluirAlumno = () => {
+    let alumnosRef = collection(this.firestore, "alumno");
+
+    addDoc(alumnosRef, {
+      codigo: this.alumno.codigo,
+      nombre: this.alumno.nombre,
+      apellido: this.alumno.apellido
+    }).then(doc => {
+      console.log("Registro Incluido");
+      this.router.navigate(['/alumno-list']);
+    }).catch(error => {
+
+    });
+  }
 
   editarAlumno = () => {
     console.log("Aqui editar en firebase");
     const document = doc(this.firestore, "alumno", this.id);
 
     updateDoc(document, {
-      codigo : this.alumno.codigo,
-      nombre : this.alumno.nombre,
-      apellido : this.alumno.apellido
+      codigo: this.alumno.codigo,
+      nombre: this.alumno.nombre,
+      apellido: this.alumno.apellido
     }).then(doc => {
       console.log("Registro Editado");
       this.router.navigate(['/alumno-list']);
-    }).catch(error=>{
+    }).catch(error => {
       //Informar al usuario
     });
-    
+
+  }
+
+  obtenerAlumno = (id: string) => {
+    const document = doc(this.firestore, "alumno", id);
+    getDoc(document).then(doc => {
+
+      console.log("Registro a editar", doc.data());
+
+      if(doc.data()){
+        this.alumno = doc.data();
+
+        if(this.alumno.avatar){
+          this.obtenerAvatarAlumno();
+        }
+      }else{
+        this.alumno = {};
+      }
+    });
   }
 
   guardarAlumno = () => {
@@ -59,22 +91,6 @@ export class AlumnoEditPage implements OnInit {
     }
   }
 
-  incluirAlumno = () => {
-    console.log("Aqui incluir en firebase");
-    let alumnosRef = collection(this.firestore, "alumno");
-
-    addDoc(alumnosRef, {
-      codigo : this.alumno.codigo,
-      nombre : this.alumno.nombre,
-      apellido : this.alumno.apellido
-    }).then(doc => {
-      console.log("Registro Incluido");
-      this.router.navigate(['/alumno-list']);
-    }).catch(error => {
-
-    });
-  }
-
   eliminarAlumno = () => {
     console.log("Aqui editar en firebase");
     const document = doc(this.firestore, "alumno", this.id);
@@ -82,19 +98,80 @@ export class AlumnoEditPage implements OnInit {
     deleteDoc(document).then(doc => {
       console.log("Registro Eliminado");
       this.router.navigate(['/alumno-list']);
-    }).catch(error=>{
+    }).catch(error => {
       //Informar al usuario
     });
-    
+
   }
 
-  alumno : any = {};
-  obtenerAlumno = (id: string) => {
-    const document = doc(this.firestore, "alumno", id);
-    getDoc(document).then(doc => {
-      console.log("Registro a editar", doc.data());
-      this.alumno = doc.data();
+  uploadFile = (input: HTMLInputElement) => {
+    if (!input.files) return
+    const files: FileList = input.files;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files.item(i);
+      if (file) {
+        console.log(file, file.name);
+        const storageRef = ref(this.storage, `avatars/alumno/${this.id}`);
+        uploadBytesResumable(storageRef, file).on(
+          'state_changed',
+          this.onUploadChange,
+          this.onUploadError,
+          this.onUploadComplete,
+        );
+      }
+    }
+  }
+
+  onUploadChange = (response: UploadTaskSnapshot) => {
+    console.log('onUploadChange', response);
+  }
+
+  onUploadError = (error: StorageError) => {
+    console.log('onUploadError', error);
+  }
+
+  onUploadComplete = () => {
+    console.log('upload completo');
+    this.editarAvatar();
+    this.obtenerAvatarAlumno();
+  }
+
+  editarAvatar = () => {
+    const document = doc(this.firestore, "alumno", this.id);
+    updateDoc(document, {
+      avatar: 'avatars/alumno/' + this.id
+    }).then(doc => {
+      console.log("Avatar Editado");
     });
   }
+
+  obtenerAvatarAlumno = () => {
+    const storageRef = ref(this.storage, `avatars/alumno/${this.id}`);
+    getDownloadURL(storageRef).then(doc => {
+      this.avatar = doc;
+    });
+  }
+
+  eliminarAvatar = () => {
+    const storageRef = ref(this.storage, `avatars/alumno/${this.id}`);
+    deleteObject(storageRef).then(() => {
+      console.log('Avatar eliminado del almacenamiento');
+
+      const document = doc(this.firestore, "alumno", this.id);
+      updateDoc(document, {
+        avatar: ''
+      }).then(() => {
+        console.log('Avatar eliminado del documento');
+        this.avatar = '';
+      }).catch(error => {
+        console.error('Error al actualizar el documento: ', error);
+      });
+    }).catch(error => {
+      console.error('Error al eliminar el avatar del almacenamiento: ', error);
+    });
+  }
+
+
 
 }

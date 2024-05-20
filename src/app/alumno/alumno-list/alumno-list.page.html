@@ -1,7 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar *ngIf="!isSearch">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>Listado de Alumnos</ion-title>
     <ion-buttons slot="primary">
+      <ion-button [ngClass]="{'dark-mode-button': isDarkMode}" (click)="toggleDarkMode()">
+        <ion-icon name="color-wand"></ion-icon>
+      </ion-button>
       <ion-button (click)="clickSearch()">
         <ion-icon slot="end" name="search"></ion-icon>
       </ion-button>
@@ -16,16 +22,16 @@
       (ionChange)="buscarSearch($event)">
     </ion-searchbar>
   </ion-toolbar>
+  <ion-row class="header-color">
+    <ion-col><strong>Codigo</strong></ion-col>
+    <ion-col><strong>Nombre</strong></ion-col>
+    <ion-col><strong>Apellido</strong></ion-col>
+  </ion-row>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-list lines="full">
-    <ion-item>
-      <ion-label>Codigo</ion-label>
-      <ion-label>Nombre</ion-label>
-      <ion-label>Apellido</ion-label>
-    </ion-item>
-  </ion-list>
+  <ion-grid>
+    
 
   <ion-list lines="full">
     <ion-item [routerLink]="['/alumno-edit/' + alumno.id]" *ngFor="let alumno of listaAlumnos">
@@ -34,12 +40,13 @@
       <ion-label>{{alumno.apellido}}</ion-label>
     </ion-item>
   </ion-list>
+</ion-grid>
 
   <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" style="margin-right: 16px;">
     <ion-fab-button [routerLink]="['/alumno-edit/new']">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>

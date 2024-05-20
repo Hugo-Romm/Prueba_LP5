@@ -35,3 +35,28 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+.header-color {
+    background-color: #3d8dff;
+    /* Ajusta este color a tu gusto */
+    color: rgb(0, 0, 0);
+    /* Ajusta el color del texto si es necesario */
+}
+
+.dark-mode-button {
+    color: rgb(255, 255, 255);
+    /* Cambia el color del botón en modo oscuro */
+}
+
+.image-container {
+    width: 500px; /* Ancho deseado para el cuadro */
+    height: 500px; /* Altura deseada para el cuadro */
+    overflow: hidden; /* Para recortar cualquier parte de la imagen que exceda el cuadro */
+    border: 1px solid #ff9100; /* Opcional: agregar un borde al cuadro */
+  }
+  
+  .image-container img {
+    width: 100%; /* Para que la imagen ocupe todo el ancho del contenedor */
+    height: 100%; /* Para mantener la relación de aspecto de la imagen */
+    object-fit: cover; /* Para que la imagen se ajuste cubriendo todo el contenedor */
+  }

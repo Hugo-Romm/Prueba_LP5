@@ -7,55 +7,62 @@
 
     <ion-title>{{isNew ? 'Nuevo' : 'Editar'}} Alumno</ion-title>
 
-      <ion-buttons slot="primary">
+    <ion-buttons slot="primary">
 
-        <ion-button fill="solid" (click)="guardarAlumno()">
-          Guardar
-          <ion-icon slot="end" name="save"></ion-icon>
-        </ion-button>
-        <ion-button *ngIf="!isNew" fill="solid" (click)="eliminarAlumno()" color="danger">
-          <ion-icon slot="end" name="trash"></ion-icon>
-        </ion-button>
-      
-      </ion-buttons>
- 
+      <ion-button fill="solid" color="success" (click)="guardarAlumno()">
+        Guardar
+        <ion-icon slot="end" name="save"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="!isNew" fill="solid" (click)="eliminarAlumno()" color="danger">
+        Eliminar Registro
+        <ion-icon slot="end" name="trash"></ion-icon>
+      </ion-button>
+
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
- 
-  <ion-list>
-    <ion-item>
-      <ion-label>ID#</ion-label>
-      <ion-input
-        [(ngModel)]="id" readonly="true" disabled="true">
+<ion-content class="ion-padding">
+
+  <ion-grid>
+    <ion-list>
+      <ion-input label="ID#" label-placement="floating" fill="outline" placeholder="Enter text" [(ngModel)]="id"
+        readonly="true" disabled="true">
       </ion-input>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label>Codigo</ion-label>
-      <ion-input
+      <br>
+      <ion-input label="Código" label-placement="floating" fill="outline" placeholder="Enter text"
         [(ngModel)]="alumno.codigo">
       </ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Nombre</ion-label>
-      <ion-input
+      <br>
+      <ion-input label="Nombre" label-placement="floating" fill="outline" placeholder="Enter text"
         [(ngModel)]="alumno.nombre">
       </ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Apellido</ion-label>
-      <ion-input
+      <br>
+      <ion-input label="Apellido" label-placement="floating" fill="outline" placeholder="Enter text"
         [(ngModel)]="alumno.apellido">
       </ion-input>
-    </ion-item>
-  </ion-list>
+    </ion-list>
+  </ion-grid>
 
-  <ion-button *ngIf="!isNew" fill="solid" (click)="eliminarAlumno()" color="danger">
-    Eliminar
-    <ion-icon slot="end" name="trash"></ion-icon>
-  </ion-button>
+  <ion-grid *ngIf="!isNew">
+    <ion-item>
+      <div class="image-container">
+        <img [src]="avatar" alt="">
+      </div>
+    </ion-item>
+    <ion-item>
+      <input id="fileUpload" type="file" #upload accept=".png,.jpg">
+      <ion-button (click)="uploadFile(upload)" color="success">Proceder a subir la imagen
+        <ion-icon slot="end" name="cloud-upload"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <ion-item *ngIf="avatar">
+      <ion-button (click)="eliminarAvatar()" color="danger">Eliminar Avatar
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-grid>
+
 </ion-content>
