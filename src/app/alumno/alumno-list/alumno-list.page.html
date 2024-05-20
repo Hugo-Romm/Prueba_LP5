@@ -1,29 +1,35 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>alumno-list</ion-title>
+    <ion-title>Listado de Alumnos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
+
   <ion-list lines="full">
-    <ion-item 
-      [routerLink]="['/alumno-edit/' + alumno.id]" 
-      
-      *ngFor="let alumno of listaAlumnos">
-      <ion-label>{{alumno.codigo}}-{{alumno.nombre}} 
-        {{alumno.apellido}}</ion-label>
+    <ion-item>
+      <ion-label>Codigo</ion-label>
+      <ion-label>Nombre</ion-label>
+      <ion-label>Apellido</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list lines="full">
+    <ion-item [routerLink]="['/alumno-edit/' + alumno.id]" 
+    
+    *ngFor="let alumno of listaAlumnos">
+      <ion-label>{{alumno.codigo}}</ion-label>
+      <ion-label>{{alumno.nombre}}</ion-label>
+      <ion-label>{{alumno.apellido}}</ion-label>
     </ion-item>
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
-  
+
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button [routerLink]="['/alumno-edit/new']">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>
-
-
-
