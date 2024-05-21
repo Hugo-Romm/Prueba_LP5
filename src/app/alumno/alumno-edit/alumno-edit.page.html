@@ -57,10 +57,13 @@
     </ion-item>
     <ion-item>
       <input id="fileUpload" type="file" #upload accept=".png,.jpg">
-      <ion-button (click)="uploadFile(upload)" color="success">Subir
+    </ion-item>
+    <ion-item>
+      <ion-button (click)="uploadFile(upload)" color="success">Subir Imagen
         <ion-icon slot="end" name="cloud-upload"></ion-icon>
       </ion-button>
     </ion-item>
+    
 
     <ion-item *ngIf="avatar">
       <ion-button (click)="eliminarAvatar()" color="danger">Eliminar Avatar
