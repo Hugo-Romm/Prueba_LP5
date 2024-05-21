@@ -39,7 +39,8 @@ export class AlumnoEditPage implements OnInit {
     addDoc(alumnosRef, {
       codigo: Number(this.alumno.codigo),
       nombre: this.alumno.nombre,
-      apellido: this.alumno.apellido
+      apellido: this.alumno.apellido,
+      fecha: new Date(this.alumno.fecha),
     }).then(doc => {
       console.log("Registro Incluido");
       this.router.navigate(['/alumno-list']);
@@ -55,7 +56,8 @@ export class AlumnoEditPage implements OnInit {
     updateDoc(document, {
       codigo: Number(this.alumno.codigo),
       nombre: this.alumno.nombre,
-      apellido: this.alumno.apellido
+      apellido: this.alumno.apellido,
+      fecha: new Date(this.alumno.fecha),
     }).then(doc => {
       console.log("Registro Editado");
       this.router.navigate(['/alumno-list']);
@@ -73,6 +75,7 @@ export class AlumnoEditPage implements OnInit {
 
       if(doc.data()){
         this.alumno = doc.data();
+        this.alumno.fecha = this.alumno.fecha.toDate().toISOString().substring(0,10)+"";
 
         if(this.alumno.avatar){
           this.obtenerAvatarAlumno();
@@ -171,6 +174,7 @@ export class AlumnoEditPage implements OnInit {
       console.error('Error al eliminar el avatar del almacenamiento: ', error);
     });
   }
+  
 
 
 

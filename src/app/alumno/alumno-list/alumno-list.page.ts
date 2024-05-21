@@ -151,5 +151,16 @@ export class AlumnoListPage implements OnInit {
     this.lastVisible = null; // Establece la propiedad lastVisible del objeto actual a null
     this.listarAlumnos(); // Llama al método listarAlumnos del objeto actual
   }
-
+  
+  formatFecha = (fecha: any) => {
+    // Verifica si la fecha es válida
+    if (fecha && fecha.toDate) {
+      const date = fecha.toDate(); // Convertir objeto de fecha de Firestore a objeto de fecha de JavaScript
+      const day = date.getDate();
+      const month = date.getMonth() + 1; // Los meses en JavaScript van de 0 a 11
+      const year = date.getFullYear();
+      return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`;
+    }
+    return ""; // Si la fecha no es válida, devuelve una cadena vacía
+  }
 }
