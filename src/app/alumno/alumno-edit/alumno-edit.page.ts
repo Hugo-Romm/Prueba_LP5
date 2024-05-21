@@ -37,7 +37,7 @@ export class AlumnoEditPage implements OnInit {
     let alumnosRef = collection(this.firestore, "alumno");
 
     addDoc(alumnosRef, {
-      codigo: this.alumno.codigo,
+      codigo: Number(this.alumno.codigo),
       nombre: this.alumno.nombre,
       apellido: this.alumno.apellido
     }).then(doc => {
@@ -53,7 +53,7 @@ export class AlumnoEditPage implements OnInit {
     const document = doc(this.firestore, "alumno", this.id);
 
     updateDoc(document, {
-      codigo: this.alumno.codigo,
+      codigo: Number(this.alumno.codigo),
       nombre: this.alumno.nombre,
       apellido: this.alumno.apellido
     }).then(doc => {

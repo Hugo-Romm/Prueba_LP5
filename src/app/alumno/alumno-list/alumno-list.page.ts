@@ -17,7 +17,7 @@ export class AlumnoListPage implements OnInit {
   li = 30;
   isDarkMode: boolean = false;
 
-  constructor(private readonly firestore: Firestore) { }
+  constructor(private readonly firestore: Firestore, private router: Router) { }
 
 
   listaAlumnos: any[] = [];
@@ -35,9 +35,14 @@ export class AlumnoListPage implements OnInit {
 
     let q = undefined;
     if (this.lastVisible) {
-      q = query(alumnosRef, orderBy('codigo', 'asc'), limit(this.li), startAfter(this.lastVisible));
+      q = query(alumnosRef, 
+        orderBy('codigo'), 
+        limit(this.li), 
+        startAfter(this.lastVisible));
     } else {
-      q = query(alumnosRef, orderBy('codigo', 'asc'), limit(this.li));
+      q = query(alumnosRef, 
+        orderBy('codigo'), 
+        limit(this.li));
     }
     const querySnapshot = getDocs(q).then(re => {
       if (!re.empty) {
@@ -61,14 +66,16 @@ export class AlumnoListPage implements OnInit {
       if (this.lastVisible) {
         q = query(alumnosRef,
           where("nombre", ">=", this.query.toUpperCase()),
-          where("nombre", "<=", this.query.toLowerCase() + '\uf8ff'), orderBy('codigo', 'asc'),
+          where("nombre", "<=", this.query.toLowerCase() + '\uf8ff'), 
+          orderBy('codigo'),
           limit(this.li),
           startAfter(this.lastVisible));
 
       } else {
         q = query(alumnosRef,
           where("nombre", ">=", this.query.toUpperCase()),
-          where("nombre", "<=", this.query.toLowerCase() + '\uf8ff'), orderBy('codigo', 'asc'),
+          where("nombre", "<=", this.query.toLowerCase() + '\uf8ff'), 
+          orderBy('codigo'),
           limit(this.li));
       }
       getDocs(q).then(re => {
@@ -100,6 +107,21 @@ export class AlumnoListPage implements OnInit {
       this.listarAlumnosSinFiltro();
     }
   }
+
+  eliminarAlumno = (id: string) => {
+    console.log('Eliminando alumno con ID:', id);
+    const documentRef = doc(this.firestore, 'alumno', id);
+ 
+ 
+    deleteDoc(documentRef)
+      .then(() => {
+        console.log('Alumno eliminado correctamente');
+        this.router.navigate(['/alumno-list']); // Asegúrate de redirigir a la ruta correcta
+      })
+      .catch((error) => {
+        console.error('Error al eliminar el alumno:', error);
+      });
+  };
 
   onIonInfinite(ev: any) {
     this.listarAlumnos();

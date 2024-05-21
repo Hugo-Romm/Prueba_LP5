@@ -26,6 +26,8 @@
     <ion-col><strong>Codigo</strong></ion-col>
     <ion-col><strong>Nombre</strong></ion-col>
     <ion-col><strong>Apellido</strong></ion-col>
+    <ion-col><strong>Fecha</strong></ion-col>
+    <ion-col><strong></strong></ion-col>
   </ion-row>
 </ion-header>
 
@@ -38,6 +40,12 @@
       <ion-label>{{alumno.codigo}}</ion-label>
       <ion-label>{{alumno.nombre}}</ion-label>
       <ion-label>{{alumno.apellido}}</ion-label>
+      <ion-label>Fecha</ion-label>
+      <ion-label>
+      <ion-button color="danger" (click)="eliminarAlumno(alumno.id)">Borrar
+        <ion-icon slot="end" name="trash"></ion-icon>
+      </ion-button>
+    </ion-label>
     </ion-item>
   </ion-list>
 </ion-grid>

@@ -14,7 +14,7 @@
         <ion-icon slot="end" name="save"></ion-icon>
       </ion-button>
       <ion-button *ngIf="!isNew" fill="solid" (click)="eliminarAlumno()" color="danger">
-        Eliminar Registro
+        Borrar
         <ion-icon slot="end" name="trash"></ion-icon>
       </ion-button>
 
@@ -31,7 +31,7 @@
         readonly="true" disabled="true">
       </ion-input>
       <br>
-      <ion-input label="Código" label-placement="floating" fill="outline" placeholder="Enter text"
+      <ion-input type="number" label="Código" label-placement="floating" fill="outline" placeholder="Enter text"
         [(ngModel)]="alumno.codigo">
       </ion-input>
       <br>
@@ -53,7 +53,7 @@
     </ion-item>
     <ion-item>
       <input id="fileUpload" type="file" #upload accept=".png,.jpg">
-      <ion-button (click)="uploadFile(upload)" color="success">Proceder a subir la imagen
+      <ion-button (click)="uploadFile(upload)" color="success">Subir
         <ion-icon slot="end" name="cloud-upload"></ion-icon>
       </ion-button>
     </ion-item>
